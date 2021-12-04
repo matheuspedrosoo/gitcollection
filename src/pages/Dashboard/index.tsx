@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import { api } from '../../services/api';
 import { Title, Form, Repos, Error } from './styles';
@@ -15,9 +16,20 @@ interface GithubRepository {
 }
 
 export const Dashboard: React.FC = () => {
-  const [repos, setRepos] = React.useState<GithubRepository[]>([]);
+  const [repos, setRepos] = React.useState<GithubRepository[]>(() => {
+    const storageRepos = localStorage.getItem('@GitCollection:repositories');
+
+    if (storageRepos) {
+      return JSON.parse(storageRepos);
+    }
+    return [];
+  });
   const [newRepo, setNewRepo] = React.useState('');
   const [inputError, setInpuError] = React.useState('');
+
+  React.useEffect(() => {
+    localStorage.setItem('@GitCollection:repositories', JSON.stringify(repos));
+  }, [repos]);
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
     setNewRepo(event.target.value);
@@ -58,7 +70,10 @@ export const Dashboard: React.FC = () => {
 
       <Repos>
         {repos.map(repository => (
-          <a href="/repositories" key={repository.full_name}>
+          <Link
+            to={`/repositories/${repository.full_name}`}
+            key={repository.full_name}
+          >
             <img
               src={repository.owner.avatar_url}
               alt={repository.owner.login}
@@ -69,7 +84,7 @@ export const Dashboard: React.FC = () => {
             </div>
 
             <FiChevronRight size={20} />
-          </a>
+          </Link>
         ))}
       </Repos>
     </>

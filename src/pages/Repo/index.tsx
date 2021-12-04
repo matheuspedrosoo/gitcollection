@@ -1,9 +1,10 @@
 import React from 'react';
 import { useRouteMatch, Link } from 'react-router-dom';
 import { FiChevronLeft } from 'react-icons/fi';
+import { FiChevronRight } from 'react-icons/fi';
 
 import logo from '../../assets/logo.svg';
-import { Header, RepoInfo } from './styles';
+import { Header, RepoInfo, Issues } from './styles';
 
 interface RepositoryParams {
   repository: string;
@@ -49,6 +50,17 @@ export const Repo: React.FC = () => {
           </li>
         </ul>
       </RepoInfo>
+
+      <Issues>
+        <Link to="/">
+          <div>
+            <strong>aaaaaaaaaaaa</strong>
+            <p>bbbbbbbbb</p>
+          </div>
+
+          <FiChevronRight size={20} />
+        </Link>
+      </Issues>
     </>
   );
 };
